@@ -1,0 +1,3 @@
+projectDir = '"./simulation"
+designInfo = '("Github_Thermal_Control_Loop" "TOP_THCL_tb" "schematic" "spectre")
+descriptionText = "None"
