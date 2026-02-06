@@ -1,0 +1,37 @@
+`include "constants.vams"
+`include "disciplines.vams"
+
+module DAC_8B(DIN,VOUT);
+
+input [7:0] DIN;
+output VOUT;
+electrical [7:0] DIN;
+electrical VOUT;
+
+parameter real voltage_high = 1;
+parameter real voltage_low = 0;
+parameter real vref_1b = 1;
+parameter real vtrans = 0.5;
+
+	integer di7,di6,di5,di4,di3,di2,di1,di0;
+	real vout;
+
+	analog begin
+		
+		di7 = (V(DIN[7])>vtrans);
+		di6 = (V(DIN[6])>vtrans);
+		di5 = (V(DIN[5])>vtrans);
+		di4 = (V(DIN[4])>vtrans);
+		di3 = (V(DIN[3])>vtrans);
+		di2 = (V(DIN[2])>vtrans);
+		di1 = (V(DIN[1])>vtrans);
+		di0 = (V(DIN[0])>vtrans);
+		
+		vout = (di7*128+di6*64+di5*32+di4*16+di3*8+di2*4+di1*2+di0)*vref_1b;
+
+		V(VOUT) <+ transition(vout,10p,10p,10p);
+
+	end
+
+
+endmodule
