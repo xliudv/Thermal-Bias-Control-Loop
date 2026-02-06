@@ -1,0 +1,43 @@
+// VerilogA for gz_VerilogA_lib, gz_ADC_8B, veriloga
+
+`include "constants.vams"
+`include "disciplines.vams"
+
+module ADC_8B(VIN,DOUT);
+
+input VIN;
+output [7:0] DOUT;
+electrical VIN;
+electrical [7:0] DOUT;
+
+parameter real voltage_high = 1;
+parameter real voltage_low = 0;
+parameter real vref_1b = 1;
+
+	integer vin, do7,do6,do5,do4,do3,do2,do1,do0;
+
+	analog begin
+		
+		vin = (V(VIN) > (floor(V(VIN)/vref_1b) + vref_1b/2))? ceil(V(VIN)/vref_1b): floor(V(VIN)/vref_1b);
+		do7 = (vin>>7)%2;
+		do6 = (vin>>6)%2;
+		do5 = (vin>>5)%2;
+		do4 = (vin>>4)%2;
+		do3 = (vin>>3)%2;
+		do2 = (vin>>2)%2;
+		do1 = (vin>>1)%2;
+		do0 = (vin>>0)%2;
+
+		V(DOUT[7]) <+ transition(do7*voltage_high,10p,10p,10p);		
+		V(DOUT[6]) <+ transition(do6*voltage_high,10p,10p,10p);
+		V(DOUT[5]) <+ transition(do5*voltage_high,10p,10p,10p);
+		V(DOUT[4]) <+ transition(do4*voltage_high,10p,10p,10p);
+		V(DOUT[3]) <+ transition(do3*voltage_high,10p,10p,10p);
+		V(DOUT[2]) <+ transition(do2*voltage_high,10p,10p,10p);
+		V(DOUT[1]) <+ transition(do1*voltage_high,10p,10p,10p);
+		V(DOUT[0]) <+ transition(do0*voltage_high,10p,10p,10p);
+
+	end
+
+
+endmodule
